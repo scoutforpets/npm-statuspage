@@ -44,6 +44,10 @@ class StatusPage {
   generateComponentsUrl() {
     return this.generatePagePath() + '/components.json'
   }
+  
+  generateSubscriberPath(subscriberId) {
+    return this.generatePagePath() + `/subscribers/${subscriberId}.json`
+  }
 
   generateSubscriberUrl() {
     return this.generatePagePath() + '/subscribers.json'
@@ -92,6 +96,12 @@ class StatusPage {
     return this.instance.post(
       this.generateSubscriberUrl(),
       this.generateSubscriberPayload(subscriber)
+    )
+  }
+
+  deleteSubscriber(subscriberId) {
+    return this.instance.delete(
+      this.generateSubscriberPath(subscriberId)
     )
   }
 

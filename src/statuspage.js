@@ -1,6 +1,7 @@
 const axios = require('axios')
 const debug = require("debug")("StatusPage")
 const moment = require('moment')
+const qs = require('qs')
 
 class StatusPage {
   constructor(apiKey, pageId) {
@@ -44,9 +45,18 @@ class StatusPage {
     return this.generatePagePath() + '/components.json'
   }
 
+  generateSubscriberUrl() {
+    return this.generatePagePath() + '/subscribers.json'
+  }
+
+  generateSubscriberPayload(subscriber) {
+    return qs.stringify({ subscriber }, { encode: false })
+  }
+
   updateMetric(metricId, val) {
-    return this.instance.post(this.generateMetricPostPath(metricId),
-                              this.generateRequestParameters(val)
+    return this.instance.post(
+      this.generateMetricPostPath(metricId),
+      this.generateRequestParameters(val)
     )
   }
 
@@ -75,6 +85,13 @@ class StatusPage {
   deleteComponent(componentId) {
     return this.instance.delete(
       this.generateComponentPath(componentId)
+    )
+  }
+
+  createSubscriber(subscriber) {
+    return this.instance.post(
+      this.generateSubscriberUrl(),
+      this.generateSubscriberPayload(subscriber)
     )
   }
 

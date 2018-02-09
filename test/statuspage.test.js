@@ -1,13 +1,12 @@
+const mocha = require('mocha')
 const expect = require('expect')
-const axios = require('axios')
-// const sinon = require('sinon')
-const uuid = require('uuid')
-// var moment = require('moment')
-var StatusPage = require('../index.js')
-const metric_id = '07fbhggxqj6l'
+
+const {describe, it} = mocha
+
+const StatusPage = require('../index.js')
 
 describe('StatusPage', () => {
-  it('Should exist', ()=>{
+  it('Should exist', () => {
     expect(
       StatusPage
     ).toExist()
@@ -34,7 +33,6 @@ describe('StatusPage', () => {
       s.generateRequestParameters('31337')
     ).toEqual('data[timestamp]=42&data[value]=31337')
   })
-
 
   it('Should generate API base path', () => {
     const s = new StatusPage(undefined, '123')
@@ -65,8 +63,8 @@ describe('StatusPage', () => {
         expect(
           url
         ).toEqual('/v1/pages/undefined/components.json')
-        return new Promise((a, r) => {
-          a({
+        return new Promise((resolve, reject) => {
+          resolve({
             data: ['hello', 'world']
           })
         })
@@ -84,14 +82,14 @@ describe('StatusPage', () => {
   })
 
   it('Should call createComponent', () => {
-    let page_id = 'cvbnm,,'
+    let pageId = 'cvbnm,,'
     let componentName = '1337-c0mp0nent'
-    let s = new StatusPage(undefined, page_id)
+    let s = new StatusPage(undefined, pageId)
     s.instance = {
       post: (url, data) => {
         expect(
           url
-        ).toEqual(`/v1/pages/${page_id}/components.json`)
+        ).toEqual(`/v1/pages/${pageId}/components.json`)
         expect(
           data
         ).toEqual(`component[name]=${componentName}`)
@@ -109,7 +107,7 @@ describe('StatusPage', () => {
     ).toEqual(`component[name]=${name}`)
   })
 
-  it('Should update and toggle components correctly', (done) =>  {
+  it('Should update and toggle components correctly', (done) => {
     const status = 'partial_outage'
     const pageId = 'asfawfr'
     const componentId = 'potato1'
@@ -125,7 +123,6 @@ describe('StatusPage', () => {
       }
     }
 
-
     let s = new StatusPage(undefined, pageId)
     s.instance = instance
     s.updateComponentState(
@@ -133,5 +130,27 @@ describe('StatusPage', () => {
       status,
       undefined
     )
+  })
+
+  it.only('Should create a subscriber', (done) => {
+    const pageId = 'asfawfr'
+    const subscriber = {
+      email: 'elon@spacex.com'
+    }
+    const instance = {
+      post: (url, data) => {
+        expect(
+          url
+        ).toEqual(`/v1/pages/${pageId}/subscribers.json`)
+        expect(
+          data
+        ).toEqual(`subscriber[email]=${subscriber.email}`)
+        done()
+      }
+    }
+
+    let s = new StatusPage(undefined, pageId)
+    s.instance = instance
+    s.createSubscriber(subscriber)
   })
 })

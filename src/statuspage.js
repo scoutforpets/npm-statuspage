@@ -1,5 +1,5 @@
 const axios = require('axios')
-const debug = require("debug")("StatusPage")
+const debug = require('debug')('StatusPage')
 const moment = require('moment')
 const qs = require('qs')
 
@@ -44,7 +44,7 @@ class StatusPage {
   generateComponentsUrl() {
     return this.generatePagePath() + '/components.json'
   }
-  
+
   generateSubscriberPath(subscriberId) {
     return this.generatePagePath() + `/subscribers/${subscriberId}.json`
   }
@@ -54,7 +54,7 @@ class StatusPage {
   }
 
   generateSubscriberPayload(subscriber) {
-    return qs.stringify({ subscriber }, { encode: false })
+    return qs.stringify({subscriber}, {encode: false})
   }
 
   updateMetric(metricId, val) {

@@ -132,7 +132,7 @@ describe('StatusPage', () => {
     )
   })
 
-  it.only('Should create a subscriber', (done) => {
+  it('Should create a subscriber', (done) => {
     const pageId = 'asfawfr'
     const subscriber = {
       email: 'elon@spacex.com'

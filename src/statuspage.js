@@ -1,5 +1,5 @@
 const axios = require('axios')
-const debug = require("debug")("StatusPage")
+const debug = require('debug')('StatusPage')
 const moment = require('moment')
 const qs = require('qs')
 
@@ -45,12 +45,16 @@ class StatusPage {
     return this.generatePagePath() + '/components.json'
   }
 
+  generateSubscriberPath(subscriberId) {
+    return this.generatePagePath() + `/subscribers/${subscriberId}.json`
+  }
+
   generateSubscriberUrl() {
     return this.generatePagePath() + '/subscribers.json'
   }
 
   generateSubscriberPayload(subscriber) {
-    return qs.stringify({ subscriber }, { encode: false })
+    return qs.stringify({subscriber}, {encode: false})
   }
 
   updateMetric(metricId, val) {
@@ -92,6 +96,12 @@ class StatusPage {
     return this.instance.post(
       this.generateSubscriberUrl(),
       this.generateSubscriberPayload(subscriber)
+    )
+  }
+
+  deleteSubscriber(subscriberId) {
+    return this.instance.delete(
+      this.generateSubscriberPath(subscriberId)
     )
   }
 

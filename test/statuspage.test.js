@@ -132,7 +132,7 @@ describe('StatusPage', () => {
     )
   })
 
-  it.only('Should create a subscriber', (done) => {
+  it('Should create a subscriber', (done) => {
     const pageId = 'asfawfr'
     const subscriber = {
       email: 'elon@spacex.com'
@@ -152,5 +152,22 @@ describe('StatusPage', () => {
     let s = new StatusPage(undefined, pageId)
     s.instance = instance
     s.createSubscriber(subscriber)
+  })
+
+  it('Should delete a subscriber', (done) => {
+    const pageId = 'asfawfr'
+    const subscriberId = '12301h4'
+    const instance = {
+      delete: (url) => {
+        expect(
+          url
+        ).toEqual(`/v1/pages/${pageId}/subscribers/${subscriberId}.json`)
+        done()
+      }
+    }
+
+    let s = new StatusPage(undefined, pageId)
+    s.instance = instance
+    s.deleteSubscriber(subscriberId)
   })
 })
